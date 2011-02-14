@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+options = {}
+
+optparse = OptionParser.new do |opts|
+    opts.banner = "Usage: mediacore [options] command"
+
+    opts.on('-h', '--help', "Display this screen") do
+        puts opts
+        exit
+    end
+end
+
+optparse.parse!
+
+if ARGV.count != 1 then
+    puts "Unknown number of arguments.  try --help"
+    exit
+end
+
+def mediacore_init()
+    Dir.mkdir('.mediacore')
+end
+
+if ARGV[0] == "init" 
+    mediacore_init()
+end
+
