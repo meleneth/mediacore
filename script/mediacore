@@ -4,7 +4,7 @@ require 'optparse'
 options = {}
 
 optparse = OptionParser.new do |opts|
-    opts.banner = "Usage: mediacore [options] command"
+    opts.banner = "Usage: mediacore [options] command\ncommand can be init or status"
 
     opts.on('-h', '--help', "Display this screen") do
         puts opts
@@ -19,11 +19,33 @@ if ARGV.count != 1 then
     exit
 end
 
+def get_mediacore_dir()
+    directory = Dir.getwd
+    while 1
+        possible_directory = "#{directory}/.mediacore"
+        return possible_directory if File.directory? possible_directory
+        if directory == '/'
+            puts "Unable to find MediaCore directory under #{Dir.getwd}"
+            exit
+        end
+        directory = File.dirname(directory)
+    end
+end
+
 def mediacore_init()
     Dir.mkdir('.mediacore')
 end
 
+def mediacore_status()
+    mediacore_dir = get_mediacore_dir()
+    puts "MediaCore directory is #{mediacore_dir}"
+end
+
 if ARGV[0] == "init" 
     mediacore_init()
+end
+
+if ARGV[0] == "status" 
+    mediacore_status()
 end
 
