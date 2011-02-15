@@ -1,10 +1,17 @@
 #!/usr/bin/env ruby
 
+require 'find'
 require 'optparse'
+require 'rexml/document'
+require 'digest/sha1'
+
 options = {}
 
 optparse = OptionParser.new do |opts|
-    opts.banner = "Usage: mediacore [options] command\ncommand can be init or status"
+    banner_lines = []
+    banner_lines << "Usage: mediacore [options] command"
+    banner_lines << "command can be init or status or import or check"
+    opts.banner = banner_lines.join("\n")
 
     opts.on('-h', '--help', "Display this screen") do
         puts opts
@@ -41,11 +48,36 @@ def mediacore_status()
     puts "MediaCore directory is #{mediacore_dir}"
 end
 
-if ARGV[0] == "init" 
-    mediacore_init()
+def mediacore_import()
+    puts "MediaCore importing hashes"
+    mediacore_dir = get_mediacore_dir()
+    
+    mediacore_hash_xml_filename = "#{mediacore_dir}/file_hashes.xml"
+    xml_doc = REXML::Document.new
+    xml_doc << REXML::XMLDecl.new
+    root_node = xml_doc.add_element('files')
+    Find.find('.') do |path|
+        if FileTest.directory?(path)
+             next if path == "."
+             Find.prune if File.basename(path) =~ /^\./
+        else
+            node = root_node.add_element('file')
+            node.attributes['path'] = File.dirname(path)
+            node.attributes['size'] = File.size(path).to_s
+            node.attributes['sha1'] = Digest::SHA1.file(path).hexdigest
+            node.attributes['name'] = File.basename(path)
+        end
+    end
+    file = File.new(mediacore_hash_xml_filename, "w+")
+    xml_doc.write(file, 0)
 end
 
-if ARGV[0] == "status" 
-    mediacore_status()
+def mediacore_check()
+    puts "Check functionality non-operational"
 end
+
+mediacore_init()   if ARGV[0] == "init"
+mediacore_status() if ARGV[0] == "status" 
+mediacore_import() if ARGV[0] == "import"
+mediacore_check()  if ARGV[0] == "check"
 
