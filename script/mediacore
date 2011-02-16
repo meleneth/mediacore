@@ -73,7 +73,16 @@ def mediacore_import()
 end
 
 def mediacore_check()
-    puts "Check functionality non-operational"
+   mediacore_dir = get_mediacore_dir()
+
+   mediacore_hash_xml_filename = "#{mediacore_dir}/file_hashes.xml"
+   puts "#{mediacore_hash_xml_filename} loading.."
+   file = File.new mediacore_hash_xml_filename
+   xml_doc = REXML::Document.new file
+   file_count = 0
+   xml_doc.elements.each("/files/file") { |e| file_count = file_count + 1 }
+   puts "check: #{file_count}"
+
 end
 
 mediacore_init()   if ARGV[0] == "init"
