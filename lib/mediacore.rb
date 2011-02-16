@@ -3,6 +3,23 @@ require 'find'
 require 'rexml/document'
 require 'digest/sha1'
 
+class MediaCore
+  attr_accessor :directory, :files
+
+  def initialize
+    @directory = nil
+  end
+
+  def load_xml_data
+    # load file hash data from file for fast access
+    # might need to load index-*.xml to catch the file copy case
+  end
+end
+
+class FileInfo
+  attr_accessor :name, :size, :path
+end
+
 def get_mediacore_dir()
     directory = Dir.getwd
     while 1
