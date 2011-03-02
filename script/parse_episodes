@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'hpricot'
+
+APP_PATH = File.expand_path('../../config/application',  __FILE__)
+require File.expand_path('../../config/environment',  __FILE__)
+
+require 'optparse'
+require 'pathname'
+
+if ARGV.count != 2 then
+	puts "Usage: parse series_name series_filename.html"
+	exit
+end
+
+puts "Will read import series #{ARGV[0]} from #{ARGV[1]}"
+
+series_name = ARGV[0]
+series_filename = ARGV[1]
+
+series = Series.find_or_create_by_name(series_name)
+
+file_contents = File.read(series_filename)
+
+obj = Hpricot(file_contents)
+
+obj.search('div[@class*=filter-all]').each do |div|
+  div.search('td[2]') do |h3|
+    contents = h3.to_plain_text
+    if contents =~ /Season (\d+), Episode (\d+): ([^\[]+)/
+      season_no = $1
+      episode_no = $2
+      episode_name = $3.gsub(/ $/, '')
+      content_lines = contents.split /\n/
+      
+      synopsis = content_lines[1]
+      if synopsis then
+        episode = Episode.find_or_create_by_series_id_and_season_no_and_episode_no(series, season_no, episode_no)
+        episode.name = episode_name
+        episode.synopsis = synopsis
+        episode.save
+      end
+      #puts "Season[#{season_no}] Episode[#{episode_no}] [#{episode_name}]"
+      #puts "------------"
+      #puts content_lines[1]
+    end
+    #puts "------------------------------"
+  end
+end
