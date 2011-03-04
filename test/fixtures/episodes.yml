@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  episode_no: 1
+  season_no: 1
+  series_id: 1
+  imdb_id: MyString
+  original_air_date: 2011-03-03
+  synopsis: MyText
+
+two:
+  name: MyString
+  episode_no: 1
+  season_no: 1
+  series_id: 1
+  imdb_id: MyString
+  original_air_date: 2011-03-03
+  synopsis: MyText

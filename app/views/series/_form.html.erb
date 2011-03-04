@@ -1,0 +1,29 @@
+<%= form_for(@series) do |f| %>
+  <% if @series.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@series.errors.count, "error") %> prohibited this series from being saved:</h2>
+
+      <ul>
+      <% @series.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :imdb_id %><br />
+    <%= f.text_field :imdb_id %>
+  </div>
+  <div class="field">
+    <%= f.label :synopsis %><br />
+    <%= f.text_area :synopsis %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
