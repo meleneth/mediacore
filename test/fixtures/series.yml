@@ -1,11 +1,11 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  name: MyString
-  imdb_id: MyString
-  synopsis: MyText
+  name: Farscape
+  imdb_id: tt0187636
+  synopsis: Wormholes
 
 two:
-  name: MyString
-  imdb_id: MyString
-  synopsis: MyText
+  name: The Simpsons
+  imdb_id: tt0096697
+  synopsis: adventures in bart land
