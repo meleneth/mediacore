@@ -3,6 +3,7 @@
 <table>
   <tr>
     <th>Name</th>
+    <th>ep count</th>
     <th>Imdb</th>
     <th>Synopsis</th>
     <th></th>
@@ -13,6 +14,7 @@
 <% @series.each do |series| %>
   <tr>
     <td><%= series.name %></td>
+    <td><%= series.episode_count %></td>
     <td><%= series.imdb_id %></td>
     <td><%= series.synopsis %></td>
     <td><%= link_to 'Show', series %></td>

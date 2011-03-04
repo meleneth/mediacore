@@ -3,6 +3,8 @@ Mediacore::Application.routes.draw do
 
   resources :series
 
+  match 'series/episodes/:id' => 'series#episodes'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

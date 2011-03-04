@@ -80,4 +80,9 @@ class SeriesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  def episodes
+    @series = Series.find(params[:id])
+    @episodes = @series.episodes
+  end
 end
