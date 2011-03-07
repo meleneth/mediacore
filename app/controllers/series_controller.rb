@@ -83,6 +83,10 @@ class SeriesController < ApplicationController
 
   def episodes
     @series = Series.find(params[:id])
-    @episodes = @series.episodes
+
+    e = Episode.arel_table
+    episode_count = e.group(e[:series_id]).project(e[:series_id], e[:episode_no].count(e[:series_id]).as('episode_count'))
+
+    #@episode_counts = @series.episodes
   end
 end
