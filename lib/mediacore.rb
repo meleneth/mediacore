@@ -1,4 +1,3 @@
-
 require 'find'
 require 'rexml/document'
 require 'digest/sha1'
@@ -17,8 +16,15 @@ class MediaCore
 end
 
 class FileInfo
-  attr_accessor :name, :size, :path
+  attr_accessor :name, :size, :path, :series_name, :season_no, :episode_no
+
+  def initialize(n=nil, s=0, p=nil)
+    @name = n
+    @size = s
+    @path = p
+  end
 end
+
 
 def get_mediacore_dir()
     directory = Dir.getwd
@@ -79,3 +85,18 @@ def mediacore_check()
 
 end
 
+def mediacore_fill_in_series_info(series, partial_info)
+  if partial_info.name =~ /S(\d?\d)E(\d?\d)/
+    partial_info.series_name = series.name
+    partial_info.season_no = $1.to_i
+    partial_info.episode_no = $2.to_i
+    return
+  end
+
+  if partial_info.name =~ /(\d?\d)x(\d?\d)/
+    partial_info.series_name = series.name
+    partial_info.season_no = $1.to_i
+    partial_info.episode_no = $2.to_i
+    return
+  end
+end
